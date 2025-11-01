@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVISTA REDES - Modelo OSI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.birds.min.js"></script>
+    <style>
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-body { font-family: 'Inter', sans-serif; }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .layer-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .layer-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-left-color: #3b82f6;
+        }
+        
+        .interactive-element {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .interactive-element:hover {
+            transform: scale(1.02);
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-dot.active {
+            background: #3b82f6;
+            transform: scale(1.2);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.8s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="font-body bg-gray-50 text-gray-900">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-network-wired text-blue-600 text-xl"></i>
+                    <span class="font-display font-bold text-xl text-gray-900">REVISTA REDES</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-gray-700 hover:text-blue-600 transition-colors">Inicio</a>
+                    <a href="#capas" class="text-gray-700 hover:text-blue-600 transition-colors">Capas OSI</a>
+                    <a href="#aplicaciones" class="text-gray-700 hover:text-blue-600 transition-colors">Aplicaciones</a>
+                    <a href="#recursos" class="text-gray-700 hover:text-blue-600 transition-colors">Recursos</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-bg pt-24 pb-16 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="slide-in">
+                    <div class="mb-6">
+                        <span class="inline-block px-4 py-2 bg-blue-100 text-blue-800 text-sm font-medium rounded-full mb-4">
+                            Edición Especial - Modelo OSI
+                        </span>
+                    </div>
+                    <h1 class="font-display text-5xl lg:text-6xl font-bold text-gradient mb-6 leading-tight">
+                        El Modelo OSI:
+                        <br>La Arquitectura
+                        <br>de las Redes
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+                        Descubre los fundamentos del modelo de referencia OSI, la base conceptual que define cómo se comunican los sistemas de red en el mundo digital moderno.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="scrollToSection('capas')" class="interactive-element bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                            Explorar Capas
+                        </button>
+                        <button onclick="scrollToSection('aplicaciones')" class="interactive-element border border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                            Ver Aplicaciones
+                        </button>
+                    </div>
+                </div>
+                <div class="floating-animation">
+                    <img src="portada_redes.png" alt="Arquitectura de Redes" class="w-full h-auto rounded-2xl shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Table of Contents -->
+    <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="font-display text-3xl font-bold text-gray-900 mb-4">Contenido de la Revista</h2>
+                <p class="text-lg text-gray-600">Explora cada sección de esta edición especial</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="layer-card bg-gray-50 p-6 rounded-xl">
+                    <div class="flex items-start space-x-4">
+                        <div class="nav-dot active mt-2"></div>
+                        <div>
+                            <h3 class="font-display text-xl font-semibold text-gray-900 mb-2">Introducción al Modelo OSI</h3>
+                            <p class="text-gray-600 mb-3">Historia, importancia y conceptos fundamentales</p>
+                            <span class="text-sm text-blue-600 font-medium">Páginas 1-2</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="layer-card bg-gray-50 p-6 rounded-xl">
+                    <div class="flex items-start space-x-4">
+                        <div class="nav-dot mt-2"></div>
+                        <div>
+                            <h3 class="font-display text-xl font-semibold text-gray-900 mb-2">Las 7 Capas del OSI</h3>
+                            <p class="text-gray-600 mb-3">Análisis detallado de cada capa</p>
+                            <span class="text-sm text-blue-600 font-medium">Páginas 3-9</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="layer-card bg-gray-50 p-6 rounded-xl">
+                    <div class="flex items-start space-x-4">
+                        <div class="nav-dot mt-2"></div>
+                        <div>
+                            <h3 class="font-display text-xl font-semibold text-gray-900 mb-2">Aplicaciones Prácticas</h3>
+                            <p class="text-gray-600 mb-3">Casos de uso y ejemplos reales</p>
+                            <span class="text-sm text-blue-600 font-medium">Páginas 10-12</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="layer-card bg-gray-50 p-6 rounded-xl">
+                    <div class="flex items-start space-x-4">
+                        <div class="nav-dot mt-2"></div>
+                        <div>
+                            <h3 class="font-display text-xl font-semibold text-gray-900 mb-2">Recursos y Herramientas</h3>
+                            <p class="text-gray-600 mb-3">Bibliografía y herramientas de diagnóstico</p>
+                            <span class="text-sm text-blue-600 font-medium">Páginas 13-14</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OSI Layers Section -->
+    <section id="capas" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">Las 7 Capas del Modelo OSI</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    El modelo OSI divide la comunicación de red en siete capas distintas, cada una con funciones específicas y responsabilidades claramente definidas.
+                </p>
+            </div>
+
+            <!-- OSI Layers Visualization -->
+            <div class="mb-16">
+                <div class="bg-white rounded-2xl shadow-xl p-8">
+                    <h3 class="font-display text-2xl font-bold text-center text-gray-900 mb-8">Arquitectura del Modelo OSI</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Layer 7 - Application -->
+                        <div class="layer-card bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg interactive-element" onclick="toggleLayer('layer7')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-desktop text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-display text-xl font-bold">Capa 7 - Aplicación</h4>
+                                        <p class="text-green-100">Interfaz con el usuario final</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down text-xl transition-transform" id="layer7-icon"></i>
+                            </div>
+                            <div class="mt-4 hidden" id="layer7-content">
+                                <p class="text-green-100 mb-3">Proporciona servicios de red directamente al usuario final. Incluye protocolos como HTTP, FTP, SMTP, DNS.</p>
+                                <div class="bg-white/20 rounded-lg p-3">
+                                    <strong class="text-white">Ejemplos:</strong> Navegadores web, clientes de correo, aplicaciones de transferencia de archivos
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layer 6 - Presentation -->
+                        <div class="layer-card bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-lg interactive-element" onclick="toggleLayer('layer6')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-code text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-display text-xl font-bold">Capa 6 - Presentación</h4>
+                                        <p class="text-purple-100">Formateo y codificación de datos</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down text-xl transition-transform" id="layer6-icon"></i>
+                            </div>
+                            <div class="mt-4 hidden" id="layer6-content">
+                                <p class="text-purple-100 mb-3">Transforma los datos para que puedan ser entendidos por la capa de aplicación. Maneja cifrado, compresión y traducción de formatos.</p>
+                                <div class="bg-white/20 rounded-lg p-3">
+                                    <strong class="text-white">Funciones:</strong> Cifrado SSL/TLS, compresión de datos, conversión de formatos (JPEG, MPEG, ASCII)
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layer 5 - Session -->
+                        <div class="layer-card bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-6 rounded-lg interactive-element" onclick="toggleLayer('layer5')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-handshake text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-display text-xl font-bold">Capa 5 - Sesión</h4>
+                                        <p class="text-indigo-100">Gestión de conexiones entre aplicaciones</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down text-xl transition-transform" id="layer5-icon"></i>
+                            </div>
+                            <div class="mt-4 hidden" id="layer5-content">
+                                <p class="text-indigo-100 mb-3">Establece, mantiene y termina sesiones entre aplicaciones. Coordina el diálogo entre sistemas.</p>
+                                <div class="bg-white/20 rounded-lg p-3">
+                                    <strong class="text-white">Protocolos:</strong> NetBIOS, RPC, SQL
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layer 4 - Transport -->
+                        <div class="layer-card bg-gradient-to-r from-yellow-500 to-orange-500 text-white p-6 rounded-lg interactive-element" onclick="toggleLayer('layer4')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-truck text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-display text-xl font-bold">Capa 4 - Transporte</h4>
+                                        <p class="text-yellow-100">Entrega confiable de datos entre hosts</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down text-xl transition-transform" id="layer4-icon"></i>
+                            </div>
+                            <div class="mt-4 hidden" id="layer4-content">
+                                <p class="text-yellow-100 mb-3">Proporciona transferencia de datos confiable y eficiente entre sistemas. Maneja control de flujo y multiplexación.</p>
+                                <div class="bg-white/20 rounded-lg p-3">
+                                    <strong class="text-white">Protocolos principales:</strong> TCP (confiable), UDP (sin conexión)
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layer 3 - Network -->
+                        <div class="layer-card bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-lg interactive-element" onclick="toggleLayer('layer3')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-route text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-display text-xl font-bold">Capa 3 - Red</h4>
+                                        <p class="text-red-100">Enrutamiento y direccionamiento lógico</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down text-xl transition-transform" id="layer3-icon"></i>
+                            </div>
+                            <div class="mt-4 hidden" id="layer3-content">
+                                <p class="text-red-100 mb-3">Responsable del enrutamiento de paquetes a través de la red. Maneja direcciones lógicas y determina la mejor ruta.</p>
+                                <div class="bg-white/20 rounded-lg p-3">
+                                    <strong class="text-white">Protocolos:</strong> IP, ICMP, ARP, RIP, OSPF
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layer 2 - Data Link -->
+                        <div class="layer-card bg-gradient-to-r from-teal-500 to-teal-600 text-white p-6 rounded-lg interactive-element" onclick="toggleLayer('layer2')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-ethernet text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-display text-xl font-bold">Capa 2 - Enlace de Datos</h4>
+                                        <p class="text-teal-100">Transmisión confiable entre nodos adyacentes</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down text-xl transition-transform" id="layer2-icon"></i>
+                            </div>
+                            <div class="mt-4 hidden" id="layer2-content">
+                                <p class="text-teal-100 mb-3">Proporciona transferencia de datos confiable entre dispositivos directamente conectados. Maneja direcciones MAC.</p>
+                                <div class="bg-white/20 rounded-lg p-3">
+                                    <strong class="text-white">Protocolos:</strong> Ethernet, Wi-Fi (802.11), PPP, HDLC
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layer 1 - Physical -->
+                        <div class="layer-card bg-gradient-to-r from-gray-600 to-gray-700 text-white p-6 rounded-lg interactive-element" onclick="toggleLayer('layer1')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-bolt text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-display text-xl font-bold">Capa 1 - Física</h4>
+                                        <p class="text-gray-300">Transmisión de bits a través del medio físico</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down text-xl transition-transform" id="layer1-icon"></i>
+                            </div>
+                            <div class="mt-4 hidden" id="layer1-content">
+                                <p class="text-gray-300 mb-3">Define las características eléctricas, mecánicas y funcionales para la transmisión de bits brutos.</p>
+                                <div class="bg-white/20 rounded-lg p-3">
+                                    <strong class="text-white">Ejemplos:</strong> Cables Ethernet, fibra óptica, ondas de radio, conectores RJ45
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Layer Information -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="font-display text-2xl font-bold text-gray-900 mb-6">Características Principales</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start space-x-3">
+                            <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-1">
+                                <i class="fas fa-check text-blue-600 text-xs"></i>
+                            </div>
+                            <div>
+                                <strong class="text-gray-900">Encapsulamiento:</strong>
+                                <span class="text-gray-600"> Cada capa añade su propia información de control</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-1">
+                                <i class="fas fa-check text-blue-600 text-xs"></i>
+                            </div>
+                            <div>
+                                <strong class="text-gray-900">Abstracción:</strong>
+                                <span class="text-gray-600"> Cada capa solo conoce a la capa adyacente</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-1">
+                                <i class="fas fa-check text-blue-600 text-xs"></i>
+                            </div>
+                            <div>
+                                <strong class="text-gray-900">Modularidad:</strong>
+                                <span class="text-gray-600"> Facilita el desarrollo y mantenimiento</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-1">
+                                <i class="fas fa-check text-blue-600 text-xs"></i>
+                            </div>
+                            <div>
+                                <strong class="text-gray-900">Estandarización:</strong>
+                                <span class="text-gray-600"> Permite la interoperabilidad entre diferentes sistemas</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="font-display text-2xl font-bold text-gray-900 mb-6">Ventajas del Modelo</h3>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">Facilita la resolución de problemas</h4>
+                            <p class="text-gray-600 text-sm">Permite identificar en qué capa se encuentra un problema de red</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">Promueve la innovación</h4>
+                            <p class="text-gray-600 text-sm">Los cambios en una capa no afectan a las demás</p>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">Mejora la compatibilidad</h4>
+                            <p class="text-gray-600 text-sm">Diferentes fabricantes pueden implementar protocolos estándar</p>
+                        </div>
+                        <div class="border-l-4 border-orange-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">Facilita la enseñanza</h4>
+                            <p class="text-gray-600 text-sm">Proporciona una estructura lógica para entender las redes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section id="aplicaciones" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">Aplicaciones Prácticas</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    El modelo OSI no es solo teórico, tiene aplicaciones concretas en el mundo real de las redes y telecomunicaciones.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 text-center">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-search text-white text-2xl"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-gray-900 mb-4">Diagnóstico de Problemas</h3>
+                    <p class="text-gray-600 mb-4">Identifica en qué capa se originan los problemas de red para una resolución más eficiente.</p>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Problemas físicos (Capa 1)</li>
+                        <li>• Conflictos de IP (Capa 3)</li>
+                        <li>• Problemas de DNS (Capa 7)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 text-center">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-gray-900 mb-4">Seguridad en Redes</h3>
+                    <p class="text-gray-600 mb-4">Implementa medidas de seguridad en diferentes capas para una protección en profundidad.</p>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Cifrado en Capa 6 (SSL/TLS)</li>
+                        <li>• Firewalls en Capa 3/4</li>
+                        <li>• Autenticación en Capa 7</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 text-center">
+                    <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-cogs text-white text-2xl"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-gray-900 mb-4">Diseño de Redes</h3>
+                    <p class="text-gray-600 mb-4">Planifica y diseña infraestructuras de red siguiendo los principios del modelo OSI.</p>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Topología física (Capa 1)</li>
+                        <li>• Subnetting IP (Capa 3)</li>
+                        <li>• Configuración de VLANs (Capa 2)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Real-world Example -->
+            <div class="bg-gray-50 rounded-2xl p-8">
+                <h3 class="font-display text-2xl font-bold text-center text-gray-900 mb-8">Ejemplo Real: Navegación Web</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-semibold text-gray-900 mb-4">Flujo de Comunicación:</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">7</div>
+                                <span class="text-gray-700">Usuario escribe www.ejemplo.com</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">6</div>
+                                <span class="text-gray-700">Cifrado SSL/TLS se aplica</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-bold">5</div>
+                                <span class="text-gray-700">Se establece la sesión HTTP</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                                <span class="text-gray-700">TCP garantiza la entrega confiable</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                                <span class="text-gray-700">IP enruta el paquete al servidor</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                                <span class="text-gray-700">Ethernet transmite los frames</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                                <span class="text-gray-700">Señales eléctricas viajan por el cable</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-900 mb-4">Herramientas de Diagnóstico por Capa:</h4>
+                        <div class="space-y-3">
+                            <div class="bg-white rounded-lg p-3 shadow-sm">
+                                <strong class="text-gray-900">Capa 1:</strong> <span class="text-gray-600">Cable testers, multímetros</span>
+                            </div>
+                            <div class="bg-white rounded-lg p-3 shadow-sm">
+                                <strong class="text-gray-900">Capa 2:</strong> <span class="text-gray-600">Wireshark, switch diagnostics</span>
+                            </div>
+                            <div class="bg-white rounded-lg p-3 shadow-sm">
+                                <strong class="text-gray-900">Capa 3:</strong> <span class="text-gray-600">Ping, traceroute, route</span>
+                            </div>
+                            <div class="bg-white rounded-lg p-3 shadow-sm">
+                                <strong class="text-gray-900">Capa 4:</strong> <span class="text-gray-600">Netstat, tcpdump</span>
+                            </div>
+                            <div class="bg-white rounded-lg p-3 shadow-sm">
+                                <strong class="text-gray-900">Capa 7:</strong> <span class="text-gray-600">Navegador, curl, telnet</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="recursos" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">Recursos y Herramientas</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Recursos adicionales para profundizar en el conocimiento del modelo OSI y las redes de computadoras.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Bibliography -->
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="font-display text-2xl font-bold text-gray-900 mb-6">Bibliografía Recomendada</h3>
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">"Computer Networking: A Top-Down Approach"</h4>
+                            <p class="text-gray-600 text-sm mb-2">James F. Kurose & Keith W. Ross</p>
+                            <p class="text-gray-500 text-xs">Excelente enfoque desde la capa de aplicación hacia abajo</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">"Data and Computer Communications"</h4>
+                            <p class="text-gray-600 text-sm mb-2">William Stallings</p>
+                            <p class="text-gray-500 text-xs">Referencia clásica sobre redes y comunicaciones</p>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">"TCP/IP Illustrated"</h4>
+                            <p class="text-gray-600 text-sm mb-2">W. Richard Stevens</p>
+                            <p class="text-gray-500 text-xs">Análisis detallado del stack TCP/IP</p>
+                        </div>
+                        <div class="border-l-4 border-orange-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">RFCs Oficiales</h4>
+                            <p class="text-gray-600 text-sm mb-2">IETF - Internet Engineering Task Force</p>
+                            <p class="text-gray-500 text-xs">Documentos técnicos oficiales de protocolos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools -->
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="font-display text-2xl font-bold text-gray-900 mb-6">Herramientas de Diagnóstico</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 rounded-lg p-4 text-center">
+                            <i class="fas fa-network-wired text-3xl text-blue-600 mb-3"></i>
+                            <h4 class="font-semibold text-gray-900 mb-2">Wireshark</h4>
+                            <p class="text-gray-600 text-sm">Analizador de protocolos de red</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4 text-center">
+                            <i class="fas fa-terminal text-3xl text-green-600 mb-3"></i>
+                            <h4 class="font-semibold text-gray-900 mb-2">Ping</h4>
+                            <p class="text-gray-600 text-sm">Verifica conectividad básica</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4 text-center">
+                            <i class="fas fa-route text-3xl text-purple-600 mb-3"></i>
+                            <h4 class="font-semibold text-gray-900 mb-2">Traceroute</h4>
+                            <p class="text-gray-600 text-sm">Rastrea la ruta de paquetes</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4 text-center">
+                            <i class="fas fa-eye text-3xl text-orange-600 mb-3"></i>
+                            <h4 class="font-semibold text-gray-900 mb-2">Netstat</h4>
+                            <p class="text-gray-600 text-sm">Muestra conexiones de red</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-900 mb-3">Recursos Online</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">• Cisco Networking Academy</a></li>
+                            <li><a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">• Wireshark University</a></li>
+                            <li><a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">• IEEE Xplore Digital Library</a></li>
+                            <li><a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">• CompTIA Network+ Resources</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion -->
+            <div class="mt-16 bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-12 text-white text-center">
+                <h3 class="font-display text-3xl font-bold mb-6">Conclusión</h3>
+                <p class="text-xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
+                    El modelo OSI representa uno de los conceptos fundamentales en el mundo de las redes de computadoras. 
+                    Su arquitectura en capas proporciona una estructura lógica y modular que facilita la comprensión, 
+                    diseño, implementación y resolución de problemas en redes complejas.
+                </p>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Dominar este modelo es esencial para cualquier profesional de TI que trabaje con redes, 
+                    ya que proporciona el marco conceptual necesario para entender cómo se comunican los dispositivos 
+                    en el mundo digital moderno.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-2 mb-6">
+                    <i class="fas fa-network-wired text-blue-400 text-2xl"></i>
+                    <span class="font-display text-2xl font-bold">REVISTA REDES</span>
+                </div>
+                <p class="text-gray-400 mb-6">Edición Especial - Modelo OSI</p>
+                <p class="text-gray-500 text-sm">
+                    © 2024 Revista Redes. Todos los derechos reservados.
+                    Realizado: Maria Macias, Yuliexy Dimas, Gabriel Quiroz
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling function
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Toggle layer information
+        function toggleLayer(layerId) {
+            const content = document.getElementById(layerId + '-content');
+            const icon = document.getElementById(layerId + '-icon');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Add scroll effects
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('bg-white/95');
+                nav.classList.remove('bg-white/90');
+            } else {
+                nav.classList.add('bg-white/90');
+                nav.classList.remove('bg-white/95');
+            }
+        });
+
+        // Initialize animations on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add fade-in animation to elements
+            const elements = document.querySelectorAll('.layer-card');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    element.style.transition = 'all 0.6s ease-out';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
